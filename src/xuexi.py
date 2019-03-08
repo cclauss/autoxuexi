@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 # -*- coding:utf-8 -*-
+from __future__ import print_function
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
@@ -158,7 +159,7 @@ class XUEXI:
         score_title = iter([u'每日登陆', u'阅读文章', u'观看视频', u'文章学习时长', u'视频学习时长'])
         score_reg = u'^(%d)分.*'
         for s in self.driver.find_elements_by_xpath('//div[@class="my-points-card-text"]'):
-            app.log(u'      %s: %s' %(score_title.next(),s.text), printtime=False)
+            app.log(u'      %s: %s' %(next(score_title),s.text), printtime=False)
             try:
                 score.append(int(s.text.split('/')[0][:-1]))
             except:
@@ -199,7 +200,7 @@ class XUEXI:
     def read_new_video(self):
         new_video = next(self.get_new_video())
 
-        print new_video
+        print(new_video)
 
         if new_video == '':
             app.log(u'没有找到新视频，请重新更新数据')
@@ -346,7 +347,7 @@ def update_local_data():
         data = json.loads(resp.content[14:-1])
         for key in data:
             for child_key in data[key]:
-                if type(data[key][child_key]) == list:
+                if isinstance(data[key][child_key], list):
                     for detail in data[key][child_key]:
                         if '_id' in detail and 'static_page_url' in detail:
                             if 'e43e220633a65f9b6d8b53712cba9caa' in detail['static_page_url']:
